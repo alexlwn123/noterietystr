@@ -1,6 +1,6 @@
 import { useQRCode } from "next-qrcode";
 
-export default (invoice) => {
+export default function QR(invoice) {
   const text = `lightning:${invoice.invoice}`;
   const { Canvas } = useQRCode();
 
