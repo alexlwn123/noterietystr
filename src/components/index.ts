@@ -16,4 +16,4 @@ export {
   Jackpot,
   Loading,
   Input
-}
+};

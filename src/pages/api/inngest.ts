@@ -1,29 +1,29 @@
 import { ScanResult } from "@/lib/lnbits";
 import { Inngest } from "inngest";
 import { serve } from "inngest/next";
-import fetch from 'node-fetch';
+import fetch from "node-fetch";
 
 // Create a client to send and receive events
 export const inngest = new Inngest({ name: "Last Pay Wins" });
 
-const duration = parseInt(`${process.env.NEXT_PUBLIC_CLOCK_DURATION ?? '300'}`);
+const duration = parseInt(`${process.env.NEXT_PUBLIC_CLOCK_DURATION ?? "300"}`);
 const handleExpiry = inngest.createFunction(
-  { name: 'Bid Received', 
+  { name: "Bid Received", 
     retries: 3, 
     // Cancels on bid event if the bid is within the duration
     cancelOn: [
-      { event: 'bid', if: `async.data.timestamp - event.data.timestamp < ${duration * 1000}`, timeout: `${duration}s` }
+      { event: "bid", if: `async.data.timestamp - event.data.timestamp < ${duration * 1000}`, timeout: `${duration}s` }
     ]
   }, 
-  { event: 'bid' },
+  { event: "bid" },
   async ({ event, step }) => { 
 
     const { timestamp, lnAddress, jackpot } = event.data;
 
-    const targetDate = await step.run('setup', () => {
+    const targetDate = await step.run("setup", () => {
       if (!timestamp || !lnAddress || !jackpot) return;
 
-      const targetTimestamp = timestamp + duration * 1000
+      const targetTimestamp = timestamp + duration * 1000;
       return targetTimestamp;
     });
 
@@ -33,14 +33,14 @@ const handleExpiry = inngest.createFunction(
     // Scan the bidder's lnurl
     const lnurlRes: ScanResult = await step.run("Read Lnurl", async () => { 
       const res = await fetch(`${process.env.LNBITS_URL!}/api/v1/lnurlscan/${lnAddress}`, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': process.env.LNBITS_API_KEY!,
+          "Content-Type": "application/json",
+          "x-api-key": process.env.LNBITS_API_KEY!,
         },
-      })
+      });
       const result = await res.json() as ScanResult;
-      if (result.status !== 'OK' || 'error' in result) {
+      if (result.status !== "OK" || "error" in result) {
         throw new Error(`Read lnurl failed: ${lnAddress} - ${JSON.stringify(result)}`);
       }
       return result;
@@ -59,18 +59,18 @@ const handleExpiry = inngest.createFunction(
       };
       const url = `${process.env.LNBITS_URL!}/api/v1/payments/lnurl`;
       const res = await fetch(url, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': process.env.LNBITS_API_KEY_ADMIN!,
+          "Content-Type": "application/json",
+          "x-api-key": process.env.LNBITS_API_KEY_ADMIN!,
         },
         body: JSON.stringify(body)
       });
       const result = await res.json() as { success_action: string, error: string };
-      if (!('success_action' in result || 'payment_hash' in result)) {
-        throw new Error(`Pay failed: ${lnAddress}: ${amount} sats - ${JSON.stringify(result)}`)
+      if (!("success_action" in result || "payment_hash" in result)) {
+        throw new Error(`Pay failed: ${lnAddress}: ${amount} sats - ${JSON.stringify(result)}`);
       }
-      return { success: 'true', data: result }
+      return { success: "true", data: result };
     });
   }
 );

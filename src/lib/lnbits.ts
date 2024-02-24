@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import fetch from "node-fetch";
 export type ScanResult = {
   status: string;
   callback: string;
@@ -10,15 +10,15 @@ export type ScanResult = {
 export const readLnurl = async (lnurl: string): Promise<ScanResult> => { 
   const url = `${process.env.LNBITS_URL!}/api/v1/lnurlscan/${lnurl}`;
   const data = await fetch(url, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': process.env.LNBITS_API_KEY!,
+      "Content-Type": "application/json",
+      "x-api-key": process.env.LNBITS_API_KEY!,
     },
   });
   if (data.status !== 200) {
-    console.error('data', await data.json());
-    return { error: data.statusText, status: 'failed' };
+    console.error("data", await data.json());
+    return { error: data.statusText, status: "failed" };
   }
   const rawResult = await data.json() as ScanResult;
   return rawResult;
@@ -28,8 +28,8 @@ export const readLnurl = async (lnurl: string): Promise<ScanResult> => {
 export const pay = async (lnAddress: string, jackpot: number) => {
   const url = `${process.env.LNBITS_URL!}/api/v1/payments/lnurl`;
   const lnurlData: ScanResult = await readLnurl(lnAddress);
-  if (lnurlData.status !== 'OK' || 'error' in lnurlData) {
-    return { status: 'failed', error: lnurlData.status };
+  if (lnurlData.status !== "OK" || "error" in lnurlData) {
+    return { status: "failed", error: lnurlData.status };
   }
   const amount = jackpot;
   const body =  {
@@ -41,27 +41,27 @@ export const pay = async (lnAddress: string, jackpot: number) => {
   };
   
   const data = await fetch(url, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': process.env.LNBITS_API_KEY_ADMIN!,
+      "Content-Type": "application/json",
+      "x-api-key": process.env.LNBITS_API_KEY_ADMIN!,
     },
     body: JSON.stringify(body)
   });
   if (data.status !== 200) {
-    return { status: 'failed', error: await data.json() };
+    return { status: "failed", error: await data.json() };
   }
   const rawResult = await data.json();
   return rawResult;
-}
+};
 
 export const checkLnbitsInvoice = async (paymentHash: string) => {
   const url = `${process.env.LNBITS_URL!}/api/v1/payments/${paymentHash}`;
   const rawData = await fetch(url, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': process.env.LNBITS_API_KEY_ADMIN!,
+      "Content-Type": "application/json",
+      "x-api-key": process.env.LNBITS_API_KEY_ADMIN!,
     }
   });
   const data = await rawData.json();
@@ -74,16 +74,16 @@ export const getLnbitsInvoice = async () => {
   const body = {
     out: false,
     amount: amount, // Sats
-    memo: 'Last Pay Wins',
+    memo: "Last Pay Wins",
     expiry: 3600,
-    unit: 'sat',
+    unit: "sat",
   };
 
   const rawData = await fetch(url, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': process.env.LNBITS_API_KEY_ADMIN!,
+      "Content-Type": "application/json",
+      "x-api-key": process.env.LNBITS_API_KEY_ADMIN!,
     },
     body: JSON.stringify(body)
   });

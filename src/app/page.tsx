@@ -1,5 +1,5 @@
-'use client'
-import styles from './page.module.css';
+"use client";
+import styles from "./page.module.css";
 import { useEffect, useRef, useState } from "react";
 import {
   Header,
@@ -12,19 +12,19 @@ import {
   Input,
 } from "@/components";
 // import usePusher from '@/hooks/usePusher';
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
-import { checkInvoiceStatus, validateLnurl } from './utils';
+import { checkInvoiceStatus, validateLnurl } from "./utils";
 import { v4 } from "uuid";
 
 export default function Home() {
   const [invoice, setInvoice] = useState(null);
   const [hash, setHash] = useState<string | null>(null);
   const [settled, setSettled] = useState(false);
-  const [userAddress, setUserAddress] = useState('');
+  const [userAddress, setUserAddress] = useState("");
   const [uuid, setUuid] = useState<string>();
-  const [refetch, setRefetch] = useState(false)
-  const [countdownKey, setCountdownKey] = useState<number>(0)
+  const [refetch, setRefetch] = useState(false);
+  const [countdownKey, setCountdownKey] = useState<number>(0);
   const [fetching, setFetching] = useState(false);
   const [checking, setChecking] = useState(false);
   const [isValidAddress, setIsValidAddress] = useState(false);
@@ -36,7 +36,7 @@ export default function Home() {
   // validate user input
   useEffect(() => {
     const delayedValidate = setTimeout(async () => {
-      setIsValidatingAddress(true)
+      setIsValidatingAddress(true);
       const res = await validateLnurl(userAddress);
       setIsValidatingAddress(false);
       console.log(res);
@@ -48,8 +48,8 @@ export default function Home() {
 
   // get lnaddr from local storage
   useEffect(() => {
-    const lnaddr = localStorage.getItem('lnaddr');
-    const uuid = localStorage.getItem('uuid');
+    const lnaddr = localStorage.getItem("lnaddr");
+    const uuid = localStorage.getItem("uuid");
     if (lnaddr) {
       setUserAddress(lnaddr);
     }
@@ -57,7 +57,7 @@ export default function Home() {
       setUuid(uuid);
     } else {
       const id = v4();
-      localStorage.setItem('uuid', id);
+      localStorage.setItem("uuid", id);
       setUuid(id);
     }
   }, []);
@@ -67,11 +67,11 @@ export default function Home() {
   useEffect(() => {
     if (fetching || hash) return;
     setFetching(true);
-    fetch('/api/invoice', { method: 'POST' })
+    fetch("/api/invoice", { method: "POST" })
       .then((response) => response.json())
       .then((data) => {
-        setInvoice(data.payment_request)
-        setHash(data.payment_hash)
+        setInvoice(data.payment_request);
+        setHash(data.payment_hash);
         setSettled(false);
         setFetching(false);
       });

@@ -1,5 +1,5 @@
-import styles from './CurrentWinner.module.css'
-import { fromSats } from 'satcomma';
+import styles from "./CurrentWinner.module.css";
+import { fromSats } from "satcomma";
 const CurrentWinner = ({currentWinner, isActive, jackpot, status}) => {
   return (
     <div className={styles.block}>

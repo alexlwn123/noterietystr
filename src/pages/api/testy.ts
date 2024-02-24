@@ -1,4 +1,4 @@
-import { checkLnbitsInvoice } from '@/lib/lnbits';
+import { checkLnbitsInvoice } from "@/lib/lnbits";
 // import pusher, { updateLastPayer } from '../../lib/pusher';
 let jackpot = 0;
 export default async (req, res) => {
@@ -29,8 +29,8 @@ export default async (req, res) => {
     //   res.status(405).json({ error: 'Method not supported' });
     // }
   } catch (e) {
-    console.error(e)
+    console.error(e);
     res.status(500).json(e);
   }
 
-}
+};

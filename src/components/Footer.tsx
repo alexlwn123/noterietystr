@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Github from "./icons/Github";
-import styles from './Footer.module.css';
+import styles from "./Footer.module.css";
 
 const Footer = async () => {
   return (
@@ -23,6 +23,6 @@ const Footer = async () => {
         </Link>
       </footer>
     </div>
-  )
+  );
 };
 export default Footer;

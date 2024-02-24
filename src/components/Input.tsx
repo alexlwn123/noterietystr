@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
-import styles from './input.module.css';
+import { useEffect, useState } from "react";
+import styles from "./input.module.css";
 import { RevolvingDot } from "react-loader-spinner";
-import Check from '@/components/icons/Check';
-import X from '@/components/icons/X';
+import Check from "@/components/icons/Check";
+import X from "@/components/icons/X";
 
 export default function Input({ placeholder, onChange, value, isValidAddress, isValidating }) {
 
@@ -15,7 +15,7 @@ export default function Input({ placeholder, onChange, value, isValidAddress, is
     else if (isValidAddress) setIcon(<Check />);
     else setIcon(<X />);
     
-  }, [isValidAddress, isValidating, value])
+  }, [isValidAddress, isValidating, value]);
 
   return (
     <div className={styles.container}>
