@@ -11,24 +11,6 @@ export const validateLnurl = async (lnurl: string) => {
   }
 }
 
-export const handleStatusUpdate = (status, lnAddress, userAddress, jackpot, timestamp, va, toast) => {
-  if (status === 'LIVE' && lnAddress !== userAddress) {
-      va.track('Bid', { user: lnAddress, jackpot, timestamp });
-      toast(`Bid Received! - ${lnAddress}`, { type: 'info' });
-    } else if (status === 'EXPIRED' && lnAddress !== userAddress) {
-      toast(`Timer Expired! ${lnAddress} wins ₿ ${fromSats(jackpot)}!`, { type: 'info', pauseOnFocusLoss: true });
-    } else if (status === 'WINNER') {
-      va.track('Winner', { user: lnAddress, jackpot, timestamp });
-      toast(`CONGRATULATIONS! You've won ₿ ${fromSats(jackpot)}!`, { type: 'success', pauseOnFocusLoss: true });
-    } else if (status === 'PAYMENT_SUCCESS') {
-      va.track('Winner Payment Success', { user: lnAddress, jackpot, timestamp });
-      toast(`Payment Settled! Enjoy your Sats!`, { type: 'success', pauseOnFocusLoss: true });
-    } else if (status === 'PAYMENT_FAILED') {
-      va.track('Winner Payment Failed', { user: lnAddress, jackpot, timestamp });
-      toast(`Payment Failed - DM @_alexlewin on Twitter to get paid.`, { type: 'error', pauseOnFocusLoss: true });
-    }
-};
-
 export const checkInvoiceStatus = (setChecking, hash, setHash, setSettled, toast, userAddress, setCountdownKey) => {
   setChecking(true);
   const url = `/api/invoice?hash=${encodeURIComponent(hash!)}&lnaddr=${userAddress}`

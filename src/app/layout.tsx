@@ -1,13 +1,14 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
-import Head from 'next/head';
+// import Head from 'next/head';
+import { ToastContainer } from 'react-toastify';
 
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Last Pay Wins',
-  description: 'Pay the invoice to reset the timer. If the timer hits zero before someone else pays, you win the jackpot.',
+  title: 'Notorietystr',
+  description: 'Boost your notoriety on nostr with.',
 }
 
 export default function RootLayout({

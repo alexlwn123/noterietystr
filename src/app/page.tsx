@@ -12,10 +12,9 @@ import {
   Input,
 } from "@/components";
 // import usePusher from '@/hooks/usePusher';
-import "react-toastify/dist/ReactToastify.css";
+import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from "react-toastify";
-import { Analytics } from '@vercel/analytics/react';
-import { checkInvoiceStatus, handleStatusUpdate, validateLnurl } from './utils';
+import { checkInvoiceStatus, validateLnurl } from './utils';
 import { v4 } from "uuid";
 
 export default function Home() {
@@ -79,61 +78,43 @@ export default function Home() {
   }, [refetch, hash]);
 
   // Check invoice
-  useEffect(() => {
-    if (settled || !hash || status === 'LOADING' || checking) return;
-    const interval = setInterval(() => {
-      if (checking) return;
-      checkInvoiceStatus(setChecking, hash, setHash, setSettled, toast, userAddress, setCountdownKey);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [hash, fetching, status, userAddress, settled, checking]);
+  // useEffect(() => {
+  //   if (settled || !hash || status === 'LOADING' || checking) return;
+  //   const interval = setInterval(() => {
+  //     if (checking) return;
+  //     checkInvoiceStatus(setChecking, hash, setHash, setSettled, toast, userAddress, setCountdownKey);
+  //   }, 1000);
+  //   return () => clearInterval(interval);
+  // }, [hash, fetching, status, userAddress, settled, checking]);
 
   return (
     <main className={styles.main}>
+
       <ToastContainer
         hideProgressBar={true}
         autoClose={3000}
         pauseOnFocusLoss={false}
         theme="dark"
         closeButton={false}
-      >
-
-        {/* <Header status={status} /> */}
-        <Loading isLoading={status === "LOADING" || !invoice}>
-          {/* <Jackpot jackpotSats={status === 'LIVE' ? jackpot : 0} /> */}
-          <div className={styles.center}>
-            <div className={styles.stack}>
-              {/* <Countdown
-              lastPayerTimestamp={timestamp}
-              countdownKey={countdownKey}
-              setCountdownKey={setCountdownKey}
-              status={status}
-              setStatus={setStatus}
-              isWinning={lnAddress === userAddress}
-              toast={toast}
-              displayingInvoice={isValidAddress}
-            /> */}
-              {/* <CurrentWinner
-              currentWinner={lnAddress ?? "Anon"}
-              isActive={status === "LIVE"}
-              jackpot={jackpot}
-              status={status}
-            /> */}
-              {/* <Input
-                placeholder={"example@lightningaddress.com"}
-                onChange={(e) => setUserAddress(e.target.value)}
-                value={userAddress}
-                isValidAddress={isValidAddress}
-                isValidating={isValidatingAddress}
-              /> */}
-              {/* <div className={styles.online}>Players Online: <b>{memberCount}</b></div> */}
-            </div>
-            {/* {userAddress && isValidAddress && <Invoice invoice={invoice} toast={toast} />} */}
+      />
+      <Header />
+      <Loading isLoading={!!invoice}>
+        {/* <Jackpot jackpotSats={status === 'LIVE' ? jackpot : 0} /> */}
+        <div className={styles.center}>
+          <div className={styles.stack}>
+            <Input
+              placeholder={"npup...."}
+              onChange={(e) => setUserAddress(e.target.value)}
+              value={userAddress}
+              isValidAddress={isValidAddress}
+              isValidating={isValidatingAddress}
+            />
+            {/* <div className={styles.online}>Players Online: <b>{memberCount}</b></div> */}
           </div>
-        </Loading>
-      </ToastContainer>
-      {/* <Footer /> */}
-      <Analytics />
+          {/* {userAddress && isValidAddress && <Invoice invoice={invoice} toast={toast} />} */}
+        </div>
+      </Loading>
+      <Footer />
     </main>
   );
 }
